@@ -1,0 +1,28 @@
+{
+  "name": "colormodel",
+  "version": "1.1.1",
+  "description": "RGB, HSL, HSV, HWB color models convertor",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/caub/colormodel.git"
+  },
+  "keywords": [
+    "color",
+    "model",
+    "convert",
+    "RGB",
+    "HSL",
+    "HSV",
+    "HWB"
+  ],
+  "author": "caub",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/caub/colormodel/issues"
+  },
+  "homepage": "https://github.com/caub/colormodel#readme"
+}
