@@ -134,29 +134,50 @@ function hslToHsv(h,s,l){
 	return [h, S, V];
 }
 
-// remaining ones are less efficient, but less frequent:
+// ab128c -> [r, g, b]
+const hexToRgb = s => s.length===3 ? 
+	[parseInt(s[0]+s[0], 16)/255, parseInt(s[1]+s[1], 16)/255, parseInt(s[2]+s[2], 16)/255] :
+	[parseInt(s.slice(0,2), 16)/255, parseInt(s.slice(2,4), 16)/255, parseInt(s.slice(4,6), 16)/255];
 
-const hslToHwb = (h,s,l) => hsvToHwb(...hslToHsv(h,s,l));
+const rgbToHex = (r, g, b) => {
+	const R = Math.floor(r*255), G = Math.floor(g*255), B = Math.floor(b*255);
+	return R%17===0 && G%17===0 && B%17===0 ? // short version
+		R.toString(16)[0]+G.toString(16)[0]+B.toString(16)[0] :
+		R.toString(16).padStart(2,0)+G.toString(16).padStart(2,0)+B.toString(16).padStart(2,0);
+}
 
-const hwbToHsl = (h,s,l) => hsvToHsl(...hwbToHsv(h,w,b));
+const fns = {
+	rgbToHsl,
+	rgbToHsv,
+	rgbToHwb,
+	rgbToHex,
+
+	hslToRgb,
+	hslToHsv,
+	hslToHwb: (h,s,l) => hsvToHwb(...hslToHsv(h,s,l)),
+	hslToHex: (h,s,l) => rgbToHex(...hslToRgb(h,s,l)),
+
+	hsvToRgb,
+	hsvToHsl,
+	hsvToHwb,
+	hsvToHex: (h,s,v) => rgbToHex(...hsvToRgb(h,s,v)), 
+
+	hwbToRgb,
+	hwbToHsl: (h,w,b) => hsvToHsl(...hwbToHsv(h,w,b)),
+	hwbToHsv,
+	hwbToHex: (h,w,b) => rgbToHex(...hwbToRgb(h,w,b)),
+
+	hexToRgb,
+	hexToHsl: s => rgbToHsl(...hexToRgb(s)),
+	hexToHsv: s => rgbToHsv(...hexToRgb(s)),
+	hexToHwb: s => rgbToHwb(...hexToRgb(s))
+};
+
+for (const k in fns) {
+	fns[k.slice(0,3)+'2'+k.slice(5).toLowerCase()] = fns[k];
+}
 
 
 if (typeof module === 'object') {
-	module.exports = {
-		rgbToHsl,
-		rgbToHsv,
-		rgbToHwb,
-
-		hslToRgb,
-		hslToHsv,
-		hslToHwb,
-
-		hsvToRgb,
-		hsvToHsl,
-		hsvToHwb,
-
-		hwbToRgb,
-		hwbToHsl,
-		hwbToHsv
-	};
+	module.exports = fns;
 }

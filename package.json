@@ -1,6 +1,6 @@
 {
-  "name": "colormodel",
-  "version": "1.1.1",
+  "name": "colorutil",
+  "version": "2.0.0",
   "description": "RGB, HSL, HSV, HWB color models convertor",
   "main": "index.js",
   "scripts": {
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/caub/colormodel.git"
+    "url": "git+https://github.com/caub/colorutil.git"
   },
   "keywords": [
     "color",
@@ -22,7 +22,7 @@
   "author": "caub",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/caub/colormodel/issues"
+    "url": "https://github.com/caub/colorutil/issues"
   },
-  "homepage": "https://github.com/caub/colormodel#readme"
+  "homepage": "https://github.com/caub/colorutil#readme"
 }

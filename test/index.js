@@ -3,26 +3,42 @@ const {
 	rgbToHsl,
 	rgbToHsv,
 	rgbToHwb,
+	rgbToHex,
 
 	hslToRgb,
 	hslToHsv,
 	hslToHwb,
+	hslToHex,
 
 	hsvToRgb,
 	hsvToHsl,
 	hsvToHwb,
+	hsvToHex, 
 
 	hwbToRgb,
 	hwbToHsl,
-	hwbToHsv
+	hwbToHsv,
+	hwbToHex,
+
+	hexToRgb,
+	hexToHsl,
+	hexToHsv,
+	hexToHwb
 } = require('../');
 
 
 const pretty = ([h,s,l]) => [Math.round(360*h) % 360, Math.round(100*s), Math.round(100*l)];
 const prettyRgb = ([h,s,l]) => [Math.round(255*h)%255, Math.round(255*s)%255, Math.round(255*l)%255];
 
-// todo make something less chaotic
 
+// console.log('- hex');
+assert.equal(rgbToHex(17/255, 68/255, 0), '140');
+assert.deepEqual(prettyRgb(hexToRgb('140')), prettyRgb([17/255, 68/255, 0]));
+assert.equal(rgbToHex(.33, .8, .99), '54ccfc');
+assert.deepEqual(prettyRgb(hexToRgb('54ccfc')), prettyRgb([.33, .8, .99]));
+
+
+// todo make something less chaotic below
 
 assert.deepEqual(hslToRgb(1/6,1,.99), [ 1, 1, 0.98 ]);
 
