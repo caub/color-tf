@@ -23,32 +23,36 @@ const {
 	hexToRgb,
 	hexToHsl,
 	hexToHsv,
-	hexToHwb
+	hexToHwb,
+
+	rgb2hwb,
+	rgb2hsl,
+	hsl2rgb,
+	hsv2rgb,
+	hwb2rgb,
+	hwb2hsv
 } = require('../');
 
 
-const pretty = ([h,s,l]) => [Math.round(360*h) % 360, Math.round(100*s), Math.round(100*l)];
-const prettyRgb = ([h,s,l]) => [Math.round(255*h)%255, Math.round(255*s)%255, Math.round(255*l)%255];
-
+const eq = (a, b) => assert.deepEqual(a, b);
 
 // console.log('- hex');
-assert.equal(rgbToHex(17/255, 68/255, 0), '140');
-assert.deepEqual(prettyRgb(hexToRgb('140')), prettyRgb([17/255, 68/255, 0]));
-assert.equal(rgbToHex(.33, .8, .99), '54ccfc');
-assert.deepEqual(prettyRgb(hexToRgb('54ccfc')), prettyRgb([.33, .8, .99]));
+eq( rgbToHex(17, 68, 0), '140' );
+eq( hexToRgb('140'), [17, 68, 0] );
+
+eq( rgbToHex(84, 204, 252), '54ccfc' );
+eq( hexToRgb('54ccfc'), [84, 204, 252] );
 
 
-// todo make something less chaotic below
+eq( hslToRgb(60, 100, 99), [ 255, 255, 250 ] );
 
-assert.deepEqual(hslToRgb(1/6,1,.99), [ 1, 1, 0.98 ]);
+const c1 = [144, 0, 100];
+assert.deepEqual( rgbToHsv(...hslToRgb(...c1)), [ 0, 0, 100 ] );
+assert.deepEqual( hslToHsv(...c1), [ 144, 0, 100 ] );
 
-const c1 = [.4, 0, 1];
-assert.deepEqual(rgbToHsv(...hslToRgb(...c1)), [ 0, 0, 1 ]);
-assert.deepEqual(hslToHsv(...c1), [ 0.4, 0, 1 ]);
-
-assert.deepEqual( rgbToHsl(...hsvToRgb(...c1)), [ 0, 0, 1 ]);
-assert.deepEqual(hsvToHsl(...c1), [ 0.4, 0, 1 ]);
-assert.deepEqual(hsvToRgb(0, 0, .7), [ 0.7, 0.7, 0.7 ]);
+assert.deepEqual( rgbToHsl(...hsvToRgb(...c1)), [ 0, 0, 100 ] );
+assert.deepEqual( hsvToHsl(...c1), [ 144, 0, 100 ] );
+assert.deepEqual( hsvToRgb(0, 0, 70), [ 179, 179, 179 ] );
 
 [
 	[255,0,0],
@@ -63,17 +67,17 @@ assert.deepEqual(hsvToRgb(0, 0, .7), [ 0.7, 0.7, 0.7 ]);
 	[128,128,128],
 	[0,0,134]
 ].forEach(a => {
-	const hwb = rgbToHwb(...a.map(i=>i/255));
-	const b = hwbToRgb(...hwb).map(i=>Math.floor(i*255));
-	assert.deepEqual(a, b);
+	const hwb = rgb2hwb(...a.map(x => x/255));
+	const b = hwb2rgb(...hwb).map(x => Math.round(x*255));
+	eq(a, b);
 });
 
 
 const rgb = [.77, .4557, .6665];
 
-assert.deepEqual(pretty(rgbToHsl(...hslToRgb(...rgb))), pretty(rgb));
+eq( rgb2hsl(...hsl2rgb(...rgb)).map(x => Math.round(x*1e8)/1e8), rgb );
 
-assert.deepEqual(rgbToHwb(.6,.6,.6), [0, .6, .4]);
+assert.deepEqual( rgbToHwb(153,153,153), [0, 60, 40] );
 
 
 [
@@ -86,30 +90,30 @@ assert.deepEqual(rgbToHwb(.6,.6,.6), [0, .6, .4]);
 	[240/360, 1, 0],
 	[240/360, 0, 1]
 ].forEach(x => {
-	const y1= hwbToRgb(...x);
-	const y2= hwbToHsv(...x);
-	const y3 = hsvToRgb(...y2);
-	assert.deepEqual(prettyRgb(y1), prettyRgb(y3));
+	const y1= hwb2rgb(...x).map(x => Math.round(x*255));
+	const y2= hwb2hsv(...x);
+	const y3 = hsv2rgb(...y2).map(x => Math.round(x*255));
+	eq( y1, y3 );
 });
 
 
-const [h,w,b] = rgbToHwb(0,0,1);  //  [ 2/3, 0, 0 ]
-const white = rgbToHwb(1,1,1); // [ 0, 1, 0 ] 
+const [h,w,b] = rgbToHwb(0,0,255);  //  [ 2/3, 0, 0 ]
+const white = rgbToHwb(255,255,255); // [ 0, 1, 0 ] 
 const black = rgbToHwb(0,0,0); // [ 0, 0, 1 ]
 
-const [wr, br] = [.5, .5], S=wr+br;
+const [wr, br] = [.5, .5];
 
-assert.deepEqual([h,w,b], [2/3, 0, 0]);
-assert.deepEqual(white, [0,1,0]);
-assert.deepEqual(black, [0,0,1]);
+eq( [h,w,b], [240, 0, 0] );
+eq( white, [0,100,0] );
+eq( black, [0,0,100] );
 
 
 assert.equal(
-	hwbToRgb(
+	hwbToHex(
 		h,
-		w+wr*(1-w),
-		b+br*(1-b)
-	).map(i => Math.round(i*255).toString(16)).join(''),
+		w+wr*(100-w),
+		b+br*(100-b)
+	),
 	'808080'
 );
 
@@ -123,7 +127,7 @@ const cs = [
 ]
 
 assert.deepEqual(
-	cs.map(x => pretty(rgbToHsl(...x.map(x => x/255)))),
+	cs.map(ci => rgbToHsl(...ci)),
 	[ 
 		[ 207, 51, 50 ],
 		[ 206, 50, 33 ],
@@ -135,6 +139,6 @@ assert.deepEqual(
 
 
 assert.deepEqual(
-	rgbToHsl(...hsvToRgb(120/360,0.1,1)),
+	rgb2hsl(...hsv2rgb(120/360, 0.1, 1)),
 	[1/3, 1, .95]
 );

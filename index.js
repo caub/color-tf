@@ -5,12 +5,13 @@ sources:
  - http://axonflux.com/handy-rgb-to-hsl-and-rgb-to-hsv-color-model-c
  - http://alvyray.com/Papers/CG/hwb2rgb.htm 
 
-	all arguments must be in [0, 1] and are returned in [0, 1]
-	so hues must be *360, color *255, saturation/value/lightness * 100 (see pretty(Rgb) in test/)
+info:
+- foo2bar: input and output are in [0, 1]
+- fooToBar: natural ranges: hues in [0, 360[, colors in [0, 255], saturation/value/lightness in [0, 100]
 */
 
 
-function hslToRgb(h, s, l){
+function hsl2rgb(h, s, l){
 	if(s != 0) { // not achromatic
 		const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
 		const p = 2 * l - q;
@@ -23,7 +24,7 @@ function hslToRgb(h, s, l){
 	return [l, l, l];
 }
 
-function hue2rgb(p, q, t){
+function hue2rgb(p, q, t){ // private fn
 	if(t < 0) t += 1;
 	if(t > 1) t -= 1;
 	if(t < 1/6) return p + (q - p) * 6 * t;
@@ -32,7 +33,7 @@ function hue2rgb(p, q, t){
 	return p;
 }
 
-function hsvToRgb(h, s, v){
+function hsv2rgb(h, s, v){
 	const i = Math.floor(h * 6);
 	const f = h * 6 - i;
 	const p = v * (1 - s);
@@ -51,7 +52,7 @@ function hsvToRgb(h, s, v){
 }
 
 
-function hwbToRgb(h, w, b){ // could throw or warn if w+b>=1 ?
+function hwb2rgb(h, w, b){ // could throw or warn if w+b>=1 ?
 	const v = 1 - b;
 	const i = Math.floor(h * 6);
 	const f = (i&1) ? 1+i - h*6 : h*6 - i; // if i is odd
@@ -69,7 +70,7 @@ function hwbToRgb(h, w, b){ // could throw or warn if w+b>=1 ?
 }
 
 
-function rgbToHsl(r, g, b){
+function rgb2hsl(r, g, b){
 	const max = Math.max(r,g,b), min = Math.min(r,g,b);
 	const l = (max + min) / 2, d = max - min;
 
@@ -85,7 +86,7 @@ function rgbToHsl(r, g, b){
 }
 
 
-function rgbToHsv(r, g, b){
+function rgb2hsv(r, g, b){
 	const max = Math.max(r,g,b), min = Math.min(r,g,b);
 	const v = max, d = max - min, s = max === 0 ? 0 : d / max;
 
@@ -100,7 +101,7 @@ function rgbToHsv(r, g, b){
 }
 
 
-function rgbToHwb(R, G, B){
+function rgb2hwb(R, G, B){
 	const max = Math.max(R,G,B), min = Math.min(R,G,B);
 	const b = 1 - max, d = max -min;
 
@@ -116,18 +117,18 @@ function rgbToHwb(R, G, B){
 }
 
 
-const hsvToHwb = (h,s,v) => [h, (1-s)*v, 1-v];
+const hsv2hwb = (h,s,v) => [h, (1-s)*v, 1-v];
 
-const hwbToHsv = (h,w,b) => [h, b===1 ? 0 : Math.max(0, 1-w/(1-b)), 1-b];
+const hwb2hsv = (h,w,b) => [h, b===1 ? 0 : Math.max(0, 1-w/(1-b)), 1-b];
 
 
-function hsvToHsl(h,s,v){
+function hsv2hsl(h,s,v){
 	const L = (2 - s) * v/2,
 		S = s*v / (L<.5 ? L*2 : 2-L*2);
 
 	return [h, S||0, L]
 }
-function hslToHsv(h,s,l){
+function hsl2hsv(h,s,l){
 	const t = s * (l<.5 ? l : 1-l),
 		V = l + t,
 		S = l>0 ? 2*t/V : 0;
@@ -136,45 +137,83 @@ function hslToHsv(h,s,l){
 
 // ab128c -> [r, g, b]
 const hexToRgb = s => s.length===3 ? 
-	[parseInt(s[0]+s[0], 16)/255, parseInt(s[1]+s[1], 16)/255, parseInt(s[2]+s[2], 16)/255] :
-	[parseInt(s.slice(0,2), 16)/255, parseInt(s.slice(2,4), 16)/255, parseInt(s.slice(4,6), 16)/255];
+	[parseInt(s[0]+s[0], 16), parseInt(s[1]+s[1], 16), parseInt(s[2]+s[2], 16)] :
+	[parseInt(s.slice(0,2), 16), parseInt(s.slice(2,4), 16), parseInt(s.slice(4,6), 16)];
 
-const rgbToHex = (r, g, b) => {
-	const R = Math.floor(r*255), G = Math.floor(g*255), B = Math.floor(b*255);
-	return R%17===0 && G%17===0 && B%17===0 ? // short version
-		R.toString(16)[0]+G.toString(16)[0]+B.toString(16)[0] :
-		R.toString(16).padStart(2,0)+G.toString(16).padStart(2,0)+B.toString(16).padStart(2,0);
-}
+const hex2rgb = s => hexToRgb(s).map(x => x/255);
+
+const rgbToHex = (R, G, B) => R%17===0 && G%17===0 && B%17===0 ? // short version
+	R.toString(16)[0]+G.toString(16)[0]+B.toString(16)[0] :
+	R.toString(16).padStart(2,0)+G.toString(16).padStart(2,0)+B.toString(16).padStart(2,0);
+
+const rgb2hex = (r, g, b) => rgbToHex(Math.round(r*255), Math.round(g*255), Math.round(b*255));
+
+// round hsl, hsv, hwb outputs
+const pretty = ([h,s,l]) => [Math.round(360*h) % 360, Math.round(100*s), Math.round(100*l)];
 
 const fns = {
-	rgbToHsl,
-	rgbToHsv,
-	rgbToHwb,
+	rgb2hsl,
+	rgb2hsv,
+	rgb2hwb,
+	rgb2hex,
+
+	rgbToHsl: (R,G,B) => pretty(rgb2hsl(R/255, G/255, B/255)),
+	rgbToHsv: (R,G,B) => pretty(rgb2hsv(R/255, G/255, B/255)),
+	rgbToHwb: (R,G,B) => pretty(rgb2hwb(R/255, G/255, B/255)),
 	rgbToHex,
 
-	hslToRgb,
-	hslToHsv,
-	hslToHwb: (h,s,l) => hsvToHwb(...hslToHsv(h,s,l)),
-	hslToHex: (h,s,l) => rgbToHex(...hslToRgb(h,s,l)),
 
-	hsvToRgb,
-	hsvToHsl,
-	hsvToHwb,
-	hsvToHex: (h,s,v) => rgbToHex(...hsvToRgb(h,s,v)), 
+	hsl2rgb,
+	hsl2hsv,
+	hsl2hwb: (h,s,l) => hsv2hwb(...hsl2hsv(h,s,l)),
+	hsl2hex: (h,s,l) => rgb2hex(...hsl2rgb(h,s,l)),
 
-	hwbToRgb,
-	hwbToHsl: (h,w,b) => hsvToHsl(...hwbToHsv(h,w,b)),
-	hwbToHsv,
-	hwbToHex: (h,w,b) => rgbToHex(...hwbToRgb(h,w,b)),
+	hslToRgb: (H,S,L) => hsl2rgb(H/360, S/100, L/100).map(x => Math.round(x*255)), 
+	hslToHsv: (H,S,L) => pretty(hsl2hsv(H/360, S/100, L/100)),
+	hslToHwb: (H,S,L) => pretty(hsv2hwb(...hsl2hsv(H/360, S/100, L/100))),
+	hslToHex: (H,S,L) => rgb2hex(...hsl2rgb(H/360, S/100, L/100)),
+
+
+	hsv2rgb,
+	hsv2hsl,
+	hsv2hwb,
+	hsv2hex: (h,s,v) => rgb2hex(...hsv2rgb(h,s,v)), 
+
+	hsvToRgb: (H,S,V) => hsv2rgb(H/360, S/100, V/100).map(x => Math.round(x*255)), 
+	hsvToHsl: (H,S,V) => pretty(hsv2hsl(H/360, S/100, V/100)),
+	hsvToHwb: (H,S,V) => pretty(hsv2hwb(H/360, S/100, V/100)),
+	hsvToHex: (H,S,V) => rgb2hex(...hsv2rgb(H/360, S/100, V/100)), 
+
+
+	hwb2rgb,
+	hwb2hsl: (h,w,b) => hsv2hsl(...hwb2hsv(h,w,b)),
+	hwb2hsv,
+	hwb2hex: (h,w,b) => rgb2hex(...hwb2rgb(h,w,b)),
+
+	hwbToRgb: (H,W,B) => hwb2rgb(H/360, W/100, B/100).map(x => Math.round(x*255)),
+	hwbToHsl: (H,W,B) => pretty(hsv2hsl(...hwb2hsv(h,w,b))),
+	hwbToHsv: (H,W,B) => pretty(hwb2hsv(H/360, W/100, B/100)),
+	hwbToHex: (H,W,B) => rgb2hex(...hwb2rgb(H/360, W/100, B/100)),
+
+
+	hex2rgb,
+	hex2hsl: s => rgb2hsl(...hex2rgb(s)),
+	hex2hsv: s => rgb2hsv(...hex2rgb(s)),
+	hex2hwb: s => rgb2hwb(...hex2rgb(s)),
 
 	hexToRgb,
-	hexToHsl: s => rgbToHsl(...hexToRgb(s)),
-	hexToHsv: s => rgbToHsv(...hexToRgb(s)),
-	hexToHwb: s => rgbToHwb(...hexToRgb(s))
+	hexToHsl: s => pretty(rgb2hsl(...hex2rgb(s))),
+	hexToHsv: s => pretty(rgb2hsv(...hex2rgb(s))),
+	hexToHwb: s => pretty(rgb2hwb(...hex2rgb(s)))
 };
 
-for (const k in fns) {
-	fns[k.slice(0,3)+'2'+k.slice(5).toLowerCase()] = fns[k];
+
+// quick shims if the js engine is old:
+if (!String.prototype.padStart) {
+	if (!String.prototype.repeat) {
+		String.prototype.repeat = function(n) {var s=this; for(var i=1;i<n;i++) s+=this; return s}
+	}
+	String.prototype.padStart = function(n, c) {return ((c+'').repeat(n)+this).slice(-n)}
 }
 
 
