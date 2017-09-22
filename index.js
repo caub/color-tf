@@ -56,7 +56,7 @@ function hwb2rgb(h, w, b){ // could throw or warn if w+b>=1 ?
 	const v = 1 - b;
 	const i = Math.floor(h * 6);
 	const f = (i&1) ? 1+i - h*6 : h*6 - i; // if i is odd
-	const n = w + f * (v - w);
+	const n = w + f * (v - w); // linear interpolation
 
 	switch (i){
 		case 6:
