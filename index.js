@@ -151,7 +151,7 @@ const rgb2hex = (r, g, b) => rgbToHex(Math.round(r*255), Math.round(g*255), Math
 // round hsl, hsv, hwb outputs
 const pretty = ([h,s,l]) => [Math.round(360*h) % 360, Math.round(100*s), Math.round(100*l)];
 
-const fns = {
+const colorUtil = {
 	rgb2hsl,
 	rgb2hsv,
 	rgb2hwb,
@@ -218,5 +218,5 @@ if (!String.prototype.padStart) {
 
 
 if (typeof module === 'object') {
-	module.exports = fns;
+	module.exports = colorUtil;
 }
