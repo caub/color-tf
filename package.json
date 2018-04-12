@@ -1,13 +1,13 @@
 {
   "name": "colorutil",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "RGB, HSL, HSV, HWB and more color models convertor",
-  "main": "cjs/index.js",
-  "browser": "umd/index.js",
-  "module": "src/index.js",
+  "main": "colorutil.cjs.js",
+  "browser": "colorutil.umd.js",
+  "module": "colorutil.es.js",
   "scripts": {
     "test": "babel-node --presets @babel/env test/index.spec",
-    "prepublish": "npx rollup -c"
+    "prepare": "npx rollup -c"
   },
   "repository": {
     "type": "git",
