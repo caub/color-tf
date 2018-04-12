@@ -1,6 +1,6 @@
 {
   "name": "colorutil",
-  "version": "4.1.0",
+  "version": "4.1.1",
   "description": "RGB, HSL, HSV, HWB and more color models convertor",
   "main": "colorutil.cjs.js",
   "browser": "colorutil.umd.js",
