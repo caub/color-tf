@@ -1,25 +1,19 @@
 import assert from 'assert';
-import { buildAll } from '../src';
-
-const {
+import {
   rgbToHsl,
   rgbToHsv,
   rgbToHwb,
-
   hslToRgb,
   hslToHsv,
   hslToHwb,
-
   hsvToRgb,
   hsvToHsl,
   hsvToHwb,
-
   hwbToRgb,
   hwbToHsl,
   hwbToHsv,
   hexToRgb,
   rgbToHex,
-
   rgb2hwb,
   rgb2hsl,
   rgb2hsv,
@@ -27,7 +21,7 @@ const {
   hsv2rgb,
   hwb2rgb,
   hwb2hsv,
-} = buildAll();
+} from '../src';
 
 const eq = (a, b) => assert.deepEqual(a, b);
 
