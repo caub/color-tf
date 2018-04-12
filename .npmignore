@@ -2,4 +2,4 @@ test
 .prettierrc
 .babelrc
 rollup.config.js
-!colorutil*
+!dist

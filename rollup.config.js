@@ -5,16 +5,16 @@ export default {
   output: [
     {
       format: 'es',
-      file: 'colorutil.es.js',
+      file: 'dist/es.js',
     },
     {
       format: 'umd',
-      file: 'colorutil.umd.js',
+      file: 'dist/umd.js',
       name: 'colorutil',
     },
     {
       format: 'cjs',
-      file: 'colorutil.cjs.js',
+      file: 'dist/cjs.js',
     },
   ],
   plugins: [
