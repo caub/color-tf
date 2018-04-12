@@ -1,9 +1,10 @@
 /* 
- color model conversions between RGB, HSL, HSV and HWB
+ color model conversions between RGB, HSL, HSV and HWB, and more
 
 sources:
  - http://axonflux.com/handy-rgb-to-hsl-and-rgb-to-hsv-color-model-c
- - http://alvyray.com/Papers/CG/hwb2rgb.htm 
+ - http://alvyray.com/Papers/CG/hwb2rgb.htm
+ - https://unpkg.com/color-convert@1.9.1/conversions.js
 
 info:
 - foo2bar: input and output are in [0, 1]

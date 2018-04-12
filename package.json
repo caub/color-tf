@@ -1,10 +1,13 @@
 {
   "name": "colorutil",
-  "version": "3.0.2",
-  "description": "RGB, HSL, HSV, HWB color models convertor",
-  "main": "index.js",
+  "version": "4.0.0",
+  "description": "RGB, HSL, HSV, HWB and more color models convertor",
+  "main": "cjs/index.js",
+  "browser": "umd/index.js",
+  "module": "src/index.js",
   "scripts": {
-    "test": "node test"
+    "test": "babel-node --presets @babel/env test/index.spec",
+    "prepublish": "npx rollup -c"
   },
   "repository": {
     "type": "git",
@@ -24,5 +27,13 @@
   "bugs": {
     "url": "https://github.com/caub/colorutil/issues"
   },
-  "homepage": "https://github.com/caub/colorutil#readme"
+  "homepage": "https://github.com/caub/colorutil#readme",
+  "devDependencies": {
+    "@babel/core": "^7.0.0-beta.44",
+    "@babel/node": "^7.0.0-beta.44",
+    "@babel/preset-env": "^7.0.0-beta.44",
+    "rollup": "^0.57.1",
+    "rollup-plugin-babel": "^4.0.0-beta.4"
+  },
+  "dependencies": {}
 }
