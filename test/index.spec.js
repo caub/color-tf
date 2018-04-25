@@ -1,9 +1,5 @@
-// import assert from 'assert';
-// import proxy from '../src/proxy';
-// import { rgbToHex, hexToRgb } from '../src/hex';
-
-const assert = require('assert');
-const proxy = require('../dist/cjs/proxy');
+import assert from 'assert';
+import proxy from '../src/proxy';
 
 const {
   rgbToHsl,

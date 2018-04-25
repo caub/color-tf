@@ -1,13 +1,15 @@
 {
   "name": "color-tf",
-  "version": "5.0.0-beta1",
+  "version": "5.0.0",
   "description": "RGB, HSL, HSV, HWB and more color models convertor",
-  "main": "dist/cjs/proxy",
-  "browser": "dist/umd.js",
-  "module": "dist/es/proxy",
+  "main": "proxy",
+  "browser": "umd.js",
+  "module": "src/proxy",
   "scripts": {
     "test": "babel-node --presets @babel/env test/index.spec",
-    "prepare": "npx rollup -c"
+    "rollup": "NODE_ENV=rollup npx rollup -c",
+    "build": "npx babel --out-dir dist --source-type module src && npm run rollup && cp package.json dist/ && cp README.md dist/ && cp -r src dist/",
+    "pub": "npm run build && npm publish dist"
   },
   "repository": {
     "type": "git",
@@ -29,6 +31,7 @@
   },
   "homepage": "https://github.com/caub/color-tf#readme",
   "devDependencies": {
+    "@babel/cli": "^7.0.0-beta.46",
     "@babel/core": "^7.0.0-beta.46",
     "@babel/node": "^7.0.0-beta.46",
     "@babel/preset-env": "^7.0.0-beta.46",

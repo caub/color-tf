@@ -11,11 +11,13 @@ naming convention:
 * foo2bar: input and output are in [0, 1]
 * fooToBar: natural ranges: hues in [0, 360[, colors in [0, 255], saturation/value/lightness in [0, 100]
 
+The default export is a proxy, there are alse [direct functions](https://unpkg.com/color-tf@5.0.0-beta2/src/) available
+
 ### Usage
 
 ```js
-import { hslToRgb, hsvToHex } from 'color-tf';
+import colorTf from 'color-tf';
+import hsl2hsv from 'color-tf/hsl2hsv';
 
-hslToRgb(200, 95, 62); // [ 66, 189, 250 ]
-hsvToHex(200, 95, 62); // '086c9e'
+colorTf.hslToRgb(200, 95, 62); // [ 66, 189, 250 ]
 ```

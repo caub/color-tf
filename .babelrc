@@ -3,13 +3,30 @@
     [
       "@babel/env",
       {
-        "modules": false,
         "shippedProposals": true,
+        "strict": true,
         "targets": {
           "browsers": ["last 2 versions", "not ie > 0", "not Android > 0"],
           "node": "8.10"
         }
       }
     ]
-  ]
+  ],
+  "env": {
+    "rollup": {
+      "presets": [
+        [
+          "@babel/env",
+          {
+            "modules": false,
+            "shippedProposals": true,
+            "targets": {
+              "browsers": ["last 2 versions", "not ie > 0", "not Android > 0"],
+              "node": "8.10"
+            }
+          }
+        ]
+      ]
+    }
+  }
 }

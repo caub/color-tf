@@ -1,4 +1,4 @@
-import * as lib from './fns/index';
+import * as lib from './fns';
 
 import * as libHex from './hex';
 
@@ -49,7 +49,8 @@ export default new Proxy(
   new Map([...Object.entries(lib), ...Object.entries(libHex)]),
   {
     get: (map, key) => {
-      console.log('get', key);
+      if (typeof key !== 'string') return map;
+
       if (map.has(key)) return map.get(key);
 
       const fromKey = key.slice(0, 3);
@@ -63,10 +64,9 @@ export default new Proxy(
         const path = getPath(fromKey, toKey);
         const funcs = Array.from({ length: path.length - 1 }, (_, i) => lib[`${path[i + 1]}2${path[i]}`]);
         fn = funcs.reduceRight((func, f) => (...a) => f(...func(...a)));
-        console.log('get path', fromKey, toKey, path, fn);
         map.set(k, fn);
       }
-      if (k[3] === '2') return fn;
+      if (key[3] === '2') return fn;
 
       const K = fromKey + 'To' + toKey[0].toUpperCase() + toKey.slice(1);
       const FN = fromKey === 'rgb'
