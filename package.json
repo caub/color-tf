@@ -4,10 +4,11 @@
   "description": "RGB, HSL, HSV, HWB and more color models convertor",
   "main": "proxy",
   "browser": "umd.js",
-  "module": "src/proxy",
+  "module": "src",
   "scripts": {
     "test": "babel-node --presets @babel/env test/index.spec",
     "rollup": "NODE_ENV=rollup npx rollup -c",
+    "rollup:debug": "rm -rf dist && NODE_ENV=rollup rollup -c rollup.config.debug.js",
     "build": "rm -rf dist && npx babel --out-dir dist --source-type module src && npm run rollup && cp package.json dist/ && cp README.md dist/ && cp -r src dist/",
     "pub": "npm run build && npm publish dist"
   },

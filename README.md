@@ -20,4 +20,5 @@ import colorTf from 'color-tf';
 import hsl2hsv from 'color-tf/hsl2hsv';
 
 colorTf.hslToRgb(200, 95, 62); // [ 66, 189, 250 ]
+console.assert(hsl2hsv === colorTf.hsl2hsv);
 ```
