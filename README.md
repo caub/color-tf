@@ -1,4 +1,4 @@
-## Color model conversions between RGB, HSL, HSV and HWB, and more
+## Color transforms between RGB, HSL, HSV and HWB, and more
 
 sources:
 
@@ -14,7 +14,7 @@ naming convention:
 ### Usage
 
 ```js
-import { hslToRgb, hsvToHex } from 'colorutil';
+import { hslToRgb, hsvToHex } from 'color-tf';
 
 hslToRgb(200, 95, 62); // [ 66, 189, 250 ]
 hsvToHex(200, 95, 62); // '086c9e'

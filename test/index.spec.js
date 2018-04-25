@@ -1,5 +1,11 @@
-import assert from 'assert';
-import {
+// import assert from 'assert';
+// import proxy from '../src/proxy';
+// import { rgbToHex, hexToRgb } from '../src/hex';
+
+const assert = require('assert');
+const proxy = require('../dist/cjs/proxy');
+
+const {
   rgbToHsl,
   rgbToHsv,
   rgbToHwb,
@@ -12,8 +18,6 @@ import {
   hwbToRgb,
   hwbToHsl,
   hwbToHsv,
-  hexToRgb,
-  rgbToHex,
   rgb2hwb,
   rgb2hsl,
   rgb2hsv,
@@ -21,7 +25,9 @@ import {
   hsv2rgb,
   hwb2rgb,
   hwb2hsv,
-} from '../src';
+  rgbToHex,
+  hexToRgb,
+} = proxy;
 
 const eq = (a, b) => assert.deepEqual(a, b);
 

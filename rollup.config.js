@@ -1,25 +1,38 @@
+import fs from 'fs';
 import babel from 'rollup-plugin-babel';
 
-export default {
-  input: 'src/index.js',
+const fns = fs.readdirSync('src/fns');
+
+console.log(fns)
+
+export default [{
+  input: ['src/proxy.js', ...fns.map(name => 'src/fns/' + name)],
   output: [
     {
       format: 'es',
-      file: 'dist/es.js',
-    },
-    {
-      format: 'umd',
-      file: 'dist/umd.js',
-      name: 'colorutil',
+      dir: 'dist/es',
     },
     {
       format: 'cjs',
-      file: 'dist/cjs.js',
+      dir: 'dist/cjs',
     },
   ],
   plugins: [
-    babel({
-      exclude: 'node_modules/**',
-    }),
+    // babel({
+    //   exclude: 'node_modules/**',
+    // }),
   ],
-};
+  experimentalCodeSplitting: true,
+}, {
+  input: 'src/proxy.js',
+  output: {
+    format: 'umd',
+    file: 'dist/umd.js',
+    name: 'colorTf',
+  },
+  plugins: [
+    // babel({
+    //   exclude: 'node_modules/**',
+    // }),
+  ],
+}];

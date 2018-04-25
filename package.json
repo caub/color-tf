@@ -1,17 +1,17 @@
 {
-  "name": "colorutil",
-  "version": "4.1.2",
+  "name": "color-tf",
+  "version": "5.0.0-beta1",
   "description": "RGB, HSL, HSV, HWB and more color models convertor",
-  "main": "dist/cjs.js",
+  "main": "dist/cjs/proxy",
   "browser": "dist/umd.js",
-  "module": "dist/es.js",
+  "module": "dist/es/proxy",
   "scripts": {
     "test": "babel-node --presets @babel/env test/index.spec",
     "prepare": "npx rollup -c"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/caub/colorutil.git"
+    "url": "git+https://github.com/caub/color-tf.git"
   },
   "keywords": [
     "color",
@@ -25,14 +25,14 @@
   "author": "caub",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/caub/colorutil/issues"
+    "url": "https://github.com/caub/color-tf/issues"
   },
-  "homepage": "https://github.com/caub/colorutil#readme",
+  "homepage": "https://github.com/caub/color-tf#readme",
   "devDependencies": {
-    "@babel/core": "^7.0.0-beta.44",
-    "@babel/node": "^7.0.0-beta.44",
-    "@babel/preset-env": "^7.0.0-beta.44",
-    "rollup": "^0.57.1",
+    "@babel/core": "^7.0.0-beta.46",
+    "@babel/node": "^7.0.0-beta.46",
+    "@babel/preset-env": "^7.0.0-beta.46",
+    "rollup": "^0.58.2",
     "rollup-plugin-babel": "^4.0.0-beta.4"
   },
   "dependencies": {}
