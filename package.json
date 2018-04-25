@@ -1,6 +1,6 @@
 {
   "name": "color-tf",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "description": "RGB, HSL, HSV, HWB and more color models convertor",
   "main": "proxy",
   "browser": "umd.js",
@@ -8,7 +8,7 @@
   "scripts": {
     "test": "babel-node --presets @babel/env test/index.spec",
     "rollup": "NODE_ENV=rollup npx rollup -c",
-    "build": "npx babel --out-dir dist --source-type module src && npm run rollup && cp package.json dist/ && cp README.md dist/ && cp -r src dist/",
+    "build": "rm -rf dist && npx babel --out-dir dist --source-type module src && npm run rollup && cp package.json dist/ && cp README.md dist/ && cp -r src dist/",
     "pub": "npm run build && npm publish dist"
   },
   "repository": {
