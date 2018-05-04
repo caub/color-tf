@@ -2,41 +2,7 @@ import * as lib from './fns';
 
 import * as libHex from './hex';
 
-const libKeys = Object.keys(lib);
-
-/**
- * @return the shortest (inverted) path fn between 2 keys in lib object
- */
-const getPath = (fromKey, toKey) => {
-  let nodes = [fromKey];
-  const visited = new Map(); // map node key => parent key
-  while (nodes.length) {
-    // search breadth-first
-    const newNodes = [];
-
-    for (const k of nodes) {
-      if (lib[k + '2' + toKey]) {
-        // done, we can stop
-        const arr = [toKey, k];
-        let fn = lib[k + '2' + toKey];
-        for (let key = k; visited.has(key) && key !== fromKey; key = visited.get(key)) {
-          // compose functions while there's a parent
-          arr.push(visited.get(key));
-        }
-        return arr;
-      }
-      libKeys
-        .filter(s => s.slice(0, 3) === k)
-        .map(s => s.slice(4))
-        .filter(key => !visited.has(key))
-        .forEach(key => {
-          visited.set(key, k);
-          newNodes.push(key);
-        });
-    }
-    nodes = newNodes;
-  }
-};
+import getFnPath from './getFnPath';
 
 const roundH = ([h, s, l]) => [Math.round(360 * h) % 360, Math.round(100 * s), Math.round(100 * l)];
 
@@ -60,10 +26,8 @@ export default new Proxy(
       let fn = lib[k];
       if (!fn) {
         // todo check fromKey, toKey are in available keys, else getPath might be in infinite loop
-
-        const path = getPath(fromKey, toKey);
-        const funcs = Array.from({ length: path.length - 1 }, (_, i) => lib[`${path[i + 1]}2${path[i]}`]);
-        fn = funcs.reduceRight((func, f) => (...a) => f(...func(...a)));
+        const fns = getFnPath(lib, fromKey, toKey);
+        fn = fns.reduceRight((fn, f) => (...a) => f(...fn(...a)));
         map.set(k, fn);
       }
       if (key[3] === '2') return fn;
