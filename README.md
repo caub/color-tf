@@ -4,14 +4,13 @@ sources:
 
 * http://axonflux.com/handy-rgb-to-hsl-and-rgb-to-hsv-color-model-c
 * http://alvyray.com/Papers/CG/hwb2rgb.htm
-* https://unpkg.com/color-convert@1.9.1/conversions.js (todo add other functions from there)
 
 naming convention:
 
 * foo2bar: input and output are in [0, 1]
-* fooToBar: natural ranges: hues in [0, 360[, colors in [0, 255], saturation/value/lightness in [0, 100]
+* fooToBar: natural ranges: hues in [0, 360[, r/g/b in [0, 255], saturation/value/lightness in [0, 100]
 
-The default export is a proxy, there are alse [direct functions](https://unpkg.com/color-tf@5.0.0-beta2/src/) available
+The default export is a proxy, there are also [direct functions](https://unpkg.com/color-tf/) available
 
 ### Usage
 

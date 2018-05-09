@@ -1,5 +1,6 @@
 import assert from 'assert';
 import proxy from '../src/proxy';
+import _hwb2hsl from '../dist/src/hwb2hsl'
 
 const {
   rgbToHsl,
@@ -19,13 +20,19 @@ const {
   rgb2hsv,
   hsl2rgb,
   hsv2rgb,
+  hsv2hsl,
   hwb2rgb,
   hwb2hsv,
+  hwb2hsl,
   rgbToHex,
   hexToRgb,
 } = proxy;
 
 const eq = (a, b) => assert.deepEqual(a, b);
+
+const args1 = [.69, .58, .41];
+eq(hwb2hsl(...args1), _hwb2hsl(...args1));
+eq(hwb2hsl(...args1), hsv2hsl(...hwb2hsv(...args1)));
 
 // console.log('- hex');
 eq(rgbToHex(17, 68, 0), '140');

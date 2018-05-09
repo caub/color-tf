@@ -26,8 +26,8 @@ export default new Proxy(
       let fn = lib[k];
       if (!fn) {
         // todo check fromKey, toKey are in available keys, else getPath might be in infinite loop
-        const fns = getFnPath(lib, fromKey, toKey);
-        fn = fns.reduceRight((fn, f) => (...a) => f(...fn(...a)));
+        const fns = getFnPath(lib, fromKey, toKey).map(n => lib[n]);
+        fn = fns.reduceRight((f, g) => (...a) => g(...f(...a)));
         map.set(k, fn);
       }
       if (key[3] === '2') return fn;
