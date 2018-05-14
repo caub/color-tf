@@ -1,7 +1,6 @@
 import * as lib from './fns';
-
-import * as libHex from './hex';
-
+import rgbToHex from './rgbToHex';
+import hexToRgb from './hexToRgb';
 import getFnPath from './getFnPath';
 
 const roundH = ([h, s, l]) => [Math.round(360 * h) % 360, Math.round(100 * s), Math.round(100 * l)];
@@ -12,7 +11,7 @@ const roundH = ([h, s, l]) => [Math.round(360 * h) % 360, Math.round(100 * s), M
  * fooToBar for functions with natural inputs [0,255] for r,g,b, [0,360[ for hue, [0, 100] for the rest
  */
 export default new Proxy(
-  new Map([...Object.entries(lib), ...Object.entries(libHex)]),
+  new Map([...Object.entries(lib), ['rgbToHex', rgbToHex], ['hexToRgb', hexToRgb]]),
   {
     get: (map, key) => {
       if (typeof key !== 'string') return map;

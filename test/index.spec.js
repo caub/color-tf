@@ -30,16 +30,22 @@ const {
 
 const eq = (a, b) => assert.deepEqual(a, b);
 
+eq(rgbToHex(...hexToRgb('#bbb'), true), 'bbbbbb');
+eq(rgbToHex(...hexToRgb('aaa')), 'aaa')
+eq(rgbToHex(...hexToRgb('e70566')), 'e70566')
+eq(rgbToHex(...hexToRgb('#e70566')), 'e70566');
+eq(rgbToHex(...hexToRgb('#e7056688')), 'e7056688');
+
 const args1 = [.69, .58, .41];
 eq(hwb2hsl(...args1), _hwb2hsl(...args1));
 eq(hwb2hsl(...args1), hsv2hsl(...hwb2hsv(...args1)));
 
 // console.log('- hex');
 eq(rgbToHex(17, 68, 0), '140');
-eq(hexToRgb('140'), [17, 68, 0]);
+eq(hexToRgb('140').slice(0, 3), [17, 68, 0]);
 
 eq(rgbToHex(84, 204, 252), '54ccfc');
-eq(hexToRgb('54ccfc'), [84, 204, 252]);
+eq(hexToRgb('54ccfc').slice(0, 3), [84, 204, 252]);
 
 eq(hslToRgb(60, 100, 99), [255, 255, 250]);
 

@@ -2,7 +2,7 @@ import babel from 'rollup-plugin-babel';
 import * as lib from './src/fns';
 
 export default [{
-  input: ['src/proxy.js', ...Object.keys(lib).map(name => `src/${name}.js`)],
+  input: ['src/proxy.js', 'src/hexToRgb.js', 'src/rgbToHex.js', ...Object.keys(lib).map(name => `src/${name}.js`)],
   output: [{
     format: 'cjs',
     dir: 'dist',
