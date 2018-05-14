@@ -1,6 +1,6 @@
 {
   "name": "color-tf",
-  "version": "5.1.0",
+  "version": "5.1.1",
   "description": "RGB, HSL, HSV, HWB and more color models convertors",
   "main": "proxy",
   "browser": "umd.js",
