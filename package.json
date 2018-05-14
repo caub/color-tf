@@ -6,7 +6,8 @@
   "browser": "umd.js",
   "module": "src",
   "scripts": {
-    "test": "npm run build && babel-node --presets @babel/env test/index.spec",
+    "test": "npm run build && nyc babel-node --presets @babel/env test/index.spec",
+    "coverage": "nyc report --reporter=lcov > coverage.lcov && codecov",
     "rollup": "rm -rf dist && NODE_ENV=rollup rollup -c",
     "build": "npm run rollup && babel-node --presets @babel/env generateFns",
     "pub": "npm run build && cp package.json dist/ && cp README.md dist/ && npm publish dist"
@@ -35,6 +36,8 @@
     "@babel/core": "^7.0.0-beta.46",
     "@babel/node": "^7.0.0-beta.46",
     "@babel/preset-env": "^7.0.0-beta.46",
+    "codecov": "^3.0.2",
+    "nyc": "^11.7.3",
     "rollup": "github:rollup/rollup",
     "rollup-plugin-babel": "^4.0.0-beta.4",
     "rollup-plugin-commonjs": "^9.1.3",
