@@ -11,9 +11,9 @@ export default [{
     dir: 'dist/src',
   }],
   plugins: [
-    babel({
-      exclude: 'node_modules/**',
-    }),
+    // babel({
+    //   exclude: 'node_modules/**',
+    // }),
   ],
   experimentalCodeSplitting: true,
 }, {
