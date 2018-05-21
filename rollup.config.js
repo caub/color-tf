@@ -11,9 +11,7 @@ export default [{
     dir: 'dist/src',
   }],
   plugins: [
-    // babel({
-    //   exclude: 'node_modules/**',
-    // }),
+    babel()
   ],
   experimentalCodeSplitting: true,
 }, {
@@ -24,8 +22,6 @@ export default [{
     name: 'colorTf',
   },
   plugins: [
-    babel({
-      exclude: 'node_modules/**',
-    }),
+    babel(),
   ],
 }];
